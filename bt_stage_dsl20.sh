@@ -2,7 +2,7 @@
 URL=https://stage.beschleunigerphysik.de/
 PREURL=https://stage.beschleunigerphysik.de/
 BROWSER=chrome  
-CONNECTIVITY=cable 
+CONNECTIVITY=dsl20
 
 if [[ "$CONNECTIVITY" == "cable" || "$CONNECTIVITY" == "3g" ]] 
 then BT_CONNECTIVITY="--connectivity.profile $CONNECTIVITY --connectivity.engine external" 
