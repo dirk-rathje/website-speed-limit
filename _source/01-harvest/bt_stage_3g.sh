@@ -12,6 +12,6 @@ if [[ "$CONNECTIVITY" == "dsl20" ]]
 then BT_CONNECTIVITY="--connectivity.profile custom --connectivity.downstreamKbps 20000 --connectivity.upstreamKbps 20000 --connectivity.latency 28 --connectivity.engine external"
 fi
 
-docker run --shm-size=1g --network=$CONNECTIVITY --rm -v "$(pwd)"/browsertime-results/preloaded:/browsertime-results sitespeedio/browsertime:1.6.0 $BT_CONNECTIVITY --speedIndex --video --preURL ${PREURL} ${URL}
+docker run --shm-size=1g --network=$CONNECTIVITY --rm -v "$(pwd)"/browsertime-results:/browsertime-results sitespeedio/browsertime:1.6.0 $BT_CONNECTIVITY --output browsertime-preloaded.json --speedIndex --video --preURL ${PREURL} ${URL}
 
-docker run --shm-size=1g --network=$CONNECTIVITY --rm -v "$(pwd)"/browsertime-results/unpreloaded:/browsertime-results sitespeedio/browsertime:1.6.0 $BT_CONNECTIVITY --speedIndex --video $URL
+docker run --shm-size=1g --network=$CONNECTIVITY --rm -v "$(pwd)"/browsertime-results:/browsertime-results sitespeedio/browsertime:1.6.0 $BT_CONNECTIVITY --output browsertime-unpreloaded.json  --speedIndex --video $URL
