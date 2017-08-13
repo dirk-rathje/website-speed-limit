@@ -23,11 +23,11 @@ fi
 
 
 
-docker run --shm-size=1g --privileged --network=$CONNECTIVITY --rm -v "$(pwd)"$OUTPUT_PATH/1st-page-visit:/browsertime-results sitespeedio/browsertime:1.6.0 -b $BROWSER $BT_CONNECTIVITY --output browsertime--1st-page-visit.json --iterations $N  --delay $DELAY --speedIndex --video  ${URL}
+docker run --shm-size=1g --privileged --network=$CONNECTIVITY --rm -v "$(pwd)"$OUTPUT_PATH/1st-site-visit:/browsertime-results sitespeedio/browsertime:1.6.0 -b $BROWSER $BT_CONNECTIVITY  --iterations $N  --delay $DELAY --speedIndex --video  ${URL}
 
-docker run --shm-size=1g --privileged --network=$CONNECTIVITY --rm -v "$(pwd)"$OUTPUT_PATH/2nd-page-visit:/browsertime-results sitespeedio/browsertime:1.6.0 -b $BROWSER $BT_CONNECTIVITY --output browsertime--2nd-page-visit.json --iterations $N --delay $DELAY --speedIndex --video --preURL ${URL} ${URL}
+docker run --shm-size=1g --privileged --network=$CONNECTIVITY --rm -v "$(pwd)"$OUTPUT_PATH/2nd-page-visit:/browsertime-results sitespeedio/browsertime:1.6.0 -b $BROWSER $BT_CONNECTIVITY --iterations $N --delay $DELAY --speedIndex --video --preURL ${URL} ${URL}
 
-docker run --shm-size=1g --privileged --network=$CONNECTIVITY --rm -v "$(pwd)"$OUTPUT_PATH/2nd-site-visit:/browsertime-results sitespeedio/browsertime:1.6.0 -b $BROWSER $BT_CONNECTIVITY --output browsertime--2nd-site-visit.json --iterations $N  --delay $DELAY  --speedIndex --video --preURL ${PREURL} ${URL}
+docker run --shm-size=1g --privileged --network=$CONNECTIVITY --rm -v "$(pwd)"$OUTPUT_PATH/2nd-site-visit:/browsertime-results sitespeedio/browsertime:1.6.0 -b $BROWSER $BT_CONNECTIVITY --iterations $N  --delay $DELAY  --speedIndex --video --preURL ${PREURL} ${URL}
 
 
 }

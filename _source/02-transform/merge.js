@@ -25,10 +25,10 @@ mkdirp.sync(transformedDataFolder)
 
 let mergedData = [];
 
-const regex = new RegExp(/results\/(.*)\/(preloaded|unpreloaded)\/(.*)\/\d\d\d\d-\d\d/)
+const regex = new RegExp(/results\/(.*)\/(.*)\/(.*)\/(.*)\/\d\d\d\d-\d\d/)
 
 
-var filenames = glob.readdirSync(Path.join(harvestedDataFolder, "browsertime-results", "**/browsertime.json"));
+var filenames = glob.readdirSync(Path.join(harvestedDataFolder, "browsertime-results", "**/*.json"));
 
 const measurements = filenames.map(filename => {
 
@@ -36,18 +36,32 @@ const measurements = filenames.map(filename => {
     const match = regex.exec(filename)
     const browsertime = JSON.parse(fs.readFileSync(filename).toString())
 
+    const requester  = match[1];
+    const connectivity  = match[2];
+    let requestMode  = match[3];
+    const timestamp = browsertime.info.timestamp;
+
+    if (requestMode === "1st-page-visit") {requestMode = "1st-site-visit"}
+    const url  = browsertime.info.url;
+
     const measurement = {
-        requester: match[1],
-        preloaded: (match[2] === "preloaded"),
-        url: browsertime.info.url,
-        timestamp: browsertime.info.timestamp,
-        connectivity: (browsertime.info.connectivity.profile === "custom" ? "dsl20" : browsertime.info.connectivity.profile),
-        rumSpeedIndex: browsertime.statistics.timings.rumSpeedIndex.median
+        timestamp,
+        rumSpeedIndex: browsertime.statistics.timings.rumSpeedIndex.median,
+        requestMode,
+        url,
+        connectivity,
+
+
+        requester,
+
+
     }
     return measurement;
 })
 
 
 let measurementsCSV = D3DSV.csvFormat(measurements)
-fs.writeFileSync(Path.join(transformedDataFolder, "rumSpeedIndices.csv"), measurementsCSV);
+// fs.writeFileSync(Path.join(transformedDataFolder, "rumSpeedIndices.csv"), measurementsCSV);
+
+console.log(measurementsCSV)
 
