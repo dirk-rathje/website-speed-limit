@@ -32,6 +32,9 @@ docker run --shm-size=1g --privileged --network=$CONNECTIVITY --rm -v "$(pwd)"$O
 
 }
 
+bt https://stage.beschleunigerphysik.de/empty/ https://stage.beschleunigerphysik.de/empty/ cable
+bt https://stage.beschleunigerphysik.de/empty/ https://stage.beschleunigerphysik.de/empty/ 3g
+
 bt https://www.desy.de/ https://www.desy.de/impressum/ cable
 bt https://www.desy.de/ https://www.desy.de/impressum/ 3g
 
