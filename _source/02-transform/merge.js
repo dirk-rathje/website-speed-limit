@@ -62,6 +62,7 @@ const measurements = filenames.map(filename => {
 
 let measurementsCSV = D3DSV.csvFormat(measurements)
 fs.writeFileSync(Path.join(transformedDataFolder, "rumSpeedIndices.csv"), measurementsCSV);
+fs.writeFileSync(Path.join(transformedDataFolder, "rumSpeedIndices.json"), JSON.stringify(measurements));
 
-console.log(measurementsCSV)
+
 
