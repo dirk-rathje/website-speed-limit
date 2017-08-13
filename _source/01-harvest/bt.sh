@@ -7,7 +7,7 @@ function bt {
 URL=$1
 PREURL=$2
 BROWSER=chrome
-CONNECTIVITY=cable
+CONNECTIVITY=$3
 N=3
 
 OUTPUT_PATH=/_data/1.0.0-1/01-harvested/browsertime-results/$HOSTNAME/$CONNECTIVITY
@@ -32,10 +32,13 @@ docker run --shm-size=1g --privileged --network=$CONNECTIVITY --rm -v "$(pwd)"$O
 
 }
 
-bt https://www.desy.de/ https://www.desy.de/impressum/
+bt https://www.desy.de/ https://www.desy.de/impressum/ cable
+bt https://www.desy.de/ https://www.desy.de/impressum/ 3g
 
-bt https://home.cern https://home.cern/data-privacy-protection-statement
+bt https://home.cern https://home.cern/data-privacy-protection-statement cable
+bt https://home.cern https://home.cern/data-privacy-protection-statement 3g
 
-bt https://stage.beschleunigerphysik.de/ https://stage.beschleunigerphysik.de/impressum
+bt https://stage.beschleunigerphysik.de/ https://stage.beschleunigerphysik.de/impressum cable
+bt https://stage.beschleunigerphysik.de/ https://stage.beschleunigerphysik.de/impressum 3g
 
 
