@@ -1,17 +1,41 @@
-#!/bin/bash    
-URL=https://stage.beschleunigerphysik.de/
-PREURL=https://stage.beschleunigerphysik.de/
-BROWSER=chrome  
-CONNECTIVITY=cable 
+#!/bin/bash
 
-if [[ "$CONNECTIVITY" == "cable" || "$CONNECTIVITY" == "3g" ]] 
-then BT_CONNECTIVITY="--connectivity.profile $CONNECTIVITY --connectivity.engine external" 
+
+
+function bt {
+
+URL=$1
+PREURL=$2
+BROWSER=chrome
+CONNECTIVITY=cable
+N=3
+
+OUTPUT_PATH=/_data/1.0.0-1/01-harvested/browsertime-results/$HOSTNAME/$CONNECTIVITY
+
+if [[ "$CONNECTIVITY" == "cable" || "$CONNECTIVITY" == "3g"  || "$CONNECTIVITY" == "3gfast" ]]
+then BT_CONNECTIVITY="--connectivity.profile $CONNECTIVITY"
 fi
 
-if [[ "$CONNECTIVITY" == "dsl20" ]] 
-then BT_CONNECTIVITY="--connectivity.profile custom --connectivity.downstreamKbps 20000 --connectivity.upstreamKbps 20000 --connectivity.latency 28 --connectivity.engine external"
+if [[ "$CONNECTIVITY" == "dsl20" ]]
+then BT_CONNECTIVITY="--connectivity.profile custom --connectivity.downstreamKbps 20000 --connectivity.upstreamKbps 20000 --connectivit
+y.latency 28"
 fi
 
-docker run --shm-size=1g --network=$CONNECTIVITY --rm -v "$(pwd)"/browsertime-results/preloaded:/browsertime-results sitespeedio/browsertime:1.6.0 $BT_CONNECTIVITY --speedIndex --video --preURL ${PREURL} ${URL}
 
-docker run --shm-size=1g --network=$CONNECTIVITY --rm -v "$(pwd)"/browsertime-results/unpreloaded:/browsertime-results sitespeedio/browsertime:1.6.0 $BT_CONNECTIVITY --speedIndex --video $URL
+
+docker run --shm-size=1g --privileged --network=$CONNECTIVITY --rm -v "$(pwd)"$OUTPUT_PATH/1st-page-visit:/browsertime-results sitespeedio/browsertime:1.6.0 -b $BROWSER $BT_CONNECTIVITY --output browsertime--1st-page-visit.json --iterations $N  --delay $DELAY --speedIndex --video  ${URL}
+
+docker run --shm-size=1g --privileged --network=$CONNECTIVITY --rm -v "$(pwd)"$OUTPUT_PATH/2nd-page-visit:/browsertime-results sitespeedio/browsertime:1.6.0 -b $BROWSER $BT_CONNECTIVITY --output browsertime--2nd-page-visit.json --iterations $N --delay $DELAY --speedIndex --video --preURL ${URL} ${URL}
+
+docker run --shm-size=1g --privileged --network=$CONNECTIVITY --rm -v "$(pwd)"$OUTPUT_PATH/2nd-site-visit:/browsertime-results sitespeedio/browsertime:1.6.0 -b $BROWSER $BT_CONNECTIVITY --output browsertime--2nd-site-visit.json --iterations $N  --delay $DELAY  --speedIndex --video --preURL ${PREURL} ${URL}
+
+
+}
+
+bt https://www.desy.de/ https://www.desy.de/impressum/
+
+bt https://home.cern https://home.cern/data-privacy-protection-statement
+
+bt https://stage.beschleunigerphysik.de/ https://stage.beschleunigerphysik.de/impressum
+
+

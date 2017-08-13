@@ -32,7 +32,7 @@ var filenames = glob.readdirSync(Path.join(harvestedDataFolder, "browsertime-res
 
 const measurements = filenames.map(filename => {
 
-
+    debug("filename", filename)
     const match = regex.exec(filename)
     const browsertime = JSON.parse(fs.readFileSync(filename).toString())
 
