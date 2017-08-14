@@ -12,7 +12,7 @@ const Debug = require('debug')
 Debug.formatters.J = (v) => {
     return JSON.stringify(v, null, "  ");
 }
-const debug = Debug();
+const debug = Debug("merge.js");
 debug.enabled = true;
 
 
@@ -32,7 +32,7 @@ var filenames = glob.readdirSync(Path.join(harvestedDataFolder, "browsertime-res
 
 const measurements = filenames.map(filename => {
 
-    debug("filename", filename)
+    debug("filename: "  + filename)
     const match = regex.exec(filename)
     const browsertime = JSON.parse(fs.readFileSync(filename).toString())
 
@@ -44,16 +44,16 @@ const measurements = filenames.map(filename => {
     if (requestMode === "1st-page-visit") {requestMode = "1st-site-visit"}
     const url  = browsertime.info.url;
 
+    const group = requestMode + " of " + url + " @ " + connectivity;
+
     const measurement = {
         timestamp,
         rumSpeedIndex: browsertime.statistics.timings.rumSpeedIndex.median,
+        group,
         requestMode,
         url,
         connectivity,
-
-
         requester,
-
 
     }
     return measurement;
@@ -70,7 +70,9 @@ measurements.forEach(m => {
 })
 
 
-fs.writeFileSync(Path.join(transformedDataFolder, "rumSpeedIndices.json.log"),json);
+fs.writeFileSync(Path.join(transformedDataFolder, "rumSpeedIndices.json.log"), json);
+
+debug("%J", measurements)
 
 
 
