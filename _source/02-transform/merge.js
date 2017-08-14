@@ -1,6 +1,6 @@
 "use strict";
 
-
+const os = require("os");
 const fs = require('fs');
 const Path = require('path');
 
@@ -18,7 +18,7 @@ debug.enabled = true;
 
 const packageVersion = require("../../package.json").version;
 const harvestedDataFolder = Path.join(".", "_data", packageVersion, "01-harvested");
-const transformedDataFolder = Path.join(".", "_data", packageVersion, "02-transformed");
+const transformedDataFolder = Path.join(".", "_data", packageVersion, "02-transformed", os.hostname());
 
 const mkdirp = require("mkdirp");
 mkdirp.sync(transformedDataFolder)
@@ -62,6 +62,7 @@ const measurements = filenames.map(filename => {
 
 let measurementsCSV = D3DSV.csvFormat(measurements)
 fs.writeFileSync(Path.join(transformedDataFolder, "rumSpeedIndices.csv"), measurementsCSV);
+fs.writeFileSync(Path.join(transformedDataFolder, "rumSpeedIndices.json"), JSON.stringify(measurements, null, " "));
 
 let json = "";
 
