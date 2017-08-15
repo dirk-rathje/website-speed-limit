@@ -49,11 +49,12 @@ const measurements = filenames.map(filename => {
     const measurement = {
         timestamp,
         rumSpeedIndex: browsertime.statistics.timings.rumSpeedIndex.median,
+        speedIndex: browsertime.statistics.timings.speedIndex.median,
         group,
-        requestMode,
-        url,
-        connectivity,
-        requester,
+        // requestMode,
+        // url,
+        // connectivity,
+        // requester,
 
     }
     return measurement;
@@ -73,7 +74,6 @@ measurements.forEach(m => {
 
 fs.writeFileSync(Path.join(transformedDataFolder, "rumSpeedIndices.json.log"), json);
 
-debug("%J", measurements)
 
 
 
