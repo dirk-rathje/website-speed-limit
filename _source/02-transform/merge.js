@@ -49,7 +49,7 @@ const measurements = filenames.map(filename => {
     const measurement = {
         timestamp,
         rumSpeedIndex: browsertime.statistics.timings.rumSpeedIndex.median,
-        speedIndex: browsertime.statistics.timings.speedIndex.median,
+        speedIndex: browsertime.statistics.visualMetrics.SpeedIndex.median,
         group,
         // requestMode,
         // url,
